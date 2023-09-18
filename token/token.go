@@ -16,11 +16,13 @@ const (
 	Int        = "Int"        // 123456
 	String     = "String"     // "x", "y"
 
-	// Mathematical Operators
+	// Operadores Matematicos
 	Plus           = "+"
 	Minus          = "-"
 	Multiplication = "*"
 	Division       = "/"
+
+	// Operadores
 
 	Assign   = "="
 	Negation = "!"
@@ -30,7 +32,7 @@ const (
 	LessThan    = "<"
 	GreaterThan = ">"
 
-	// Delimiters
+	// Delimitadores
 	Comma     = ","
 	Semicolon = ";"
 	Colon     = ":"
@@ -55,7 +57,7 @@ const (
 var keywords = map[string]TokenType{
 	"fn":      Function,
 	"var":     Let,
-	"verd":    True,
+	"verdd":   True,
 	"falso":   False,
 	"si":      If,
 	"si-no":   Else,

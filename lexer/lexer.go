@@ -6,15 +6,29 @@ import (
 
 type Lexer struct {
 	input        string
-	position     int
-	nextPosition int
-	ch           byte
+	position     int  // Posicion actual en input (caracter actual)
+	nextPosition int  // Posicion de lectura en input (caracter siguiente)
+	ch           byte // Caracter actual que se esta leyendo
 }
 
 func New(input string) *Lexer {
 	l := &Lexer{input: input}
 	l.readChar()
 	return l
+}
+
+func (l *Lexer) readChar() {
+	l.ch = l.peekChar()
+	l.position = l.nextPosition
+	l.nextPosition += 1
+}
+
+func (l *Lexer) peekChar() byte {
+	if l.nextPosition >= len(l.input) {
+		return 0
+	} else {
+		return l.input[l.nextPosition]
+	}
 }
 
 func (l *Lexer) NextToken() token.Token {
@@ -99,12 +113,6 @@ func newToken(tokenType token.TokenType, ch byte) token.Token {
 	return token.Token{Type: tokenType, Literal: string(ch)}
 }
 
-func (l *Lexer) readChar() {
-	l.ch = l.peekChar()
-	l.position = l.nextPosition
-	l.nextPosition += 1
-}
-
 func (l *Lexer) readString() string {
 	pos := l.position + 1
 	for {
@@ -143,13 +151,5 @@ func isDigit(ch byte) bool {
 func (l *Lexer) skipWhitespace() {
 	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
 		l.readChar()
-	}
-}
-
-func (l *Lexer) peekChar() byte {
-	if l.nextPosition >= len(l.input) {
-		return 0
-	} else {
-		return l.input[l.nextPosition]
 	}
 }
