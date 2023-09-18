@@ -1,7 +1,7 @@
-package pkg
+package lexer
 
 import (
-	"github.com/Corralitz/cocolang-go/pkg/token"
+	"github.com/Corralitz/cocolang-go/token"
 )
 
 type Lexer struct {

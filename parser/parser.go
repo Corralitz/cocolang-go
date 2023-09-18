@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/Corralitz/cocolang-go/token/ast"
-	"github.com/kitasuke/monkey-go/lexer"
-	"github.com/kitasuke/monkey-go/token"
+	"github.com/Corralitz/cocolang-go/ast"
+	"github.com/Corralitz/cocolang-go/lexer"
+	"github.com/Corralitz/cocolang-go/token"
 )
 
 const (
@@ -22,16 +22,16 @@ const (
 )
 
 var precedences = map[token.TokenType]int{
-	token.Equal:       Equals,
-	token.NotEqual:    Equals,
-	token.LessThan:    LessOrGreater,
-	token.GreaterThan: LessOrGreater,
-	token.Plus:        Sum,
-	token.Minus:       Sum,
-	token.Slash:       Product,
-	token.Asterisk:    Product,
-	token.LeftParen:   Call,
-	token.LeftBracket: Index,
+	token.Equal:          Equals,
+	token.NotEqual:       Equals,
+	token.LessThan:       LessOrGreater,
+	token.GreaterThan:    LessOrGreater,
+	token.Plus:           Sum,
+	token.Minus:          Sum,
+	token.Division:       Product,
+	token.Multiplication: Product,
+	token.LeftParen:      Call,
+	token.LeftBracket:    Index,
 }
 
 type (
@@ -56,7 +56,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.prefixParseFns = make(map[token.TokenType]prefixParseFn)
 	p.registerPrefix(token.Identifier, p.parseIdentifier)
 	p.registerPrefix(token.Int, p.parseIntegerLiteral)
-	p.registerPrefix(token.Bang, p.parsePrefixExpression)
+	p.registerPrefix(token.Negation, p.parsePrefixExpression)
 	p.registerPrefix(token.Minus, p.parsePrefixExpression)
 	p.registerPrefix(token.True, p.parseBoolean)
 	p.registerPrefix(token.False, p.parseBoolean)
@@ -70,8 +70,8 @@ func New(l *lexer.Lexer) *Parser {
 	p.infixParseFns = make(map[token.TokenType]infixParseFn)
 	p.registerInfix(token.Plus, p.parseInfixExpression)
 	p.registerInfix(token.Minus, p.parseInfixExpression)
-	p.registerInfix(token.Slash, p.parseInfixExpression)
-	p.registerInfix(token.Asterisk, p.parseInfixExpression)
+	p.registerInfix(token.Division, p.parseInfixExpression)
+	p.registerInfix(token.Multiplication, p.parseInfixExpression)
 	p.registerInfix(token.Equal, p.parseInfixExpression)
 	p.registerInfix(token.NotEqual, p.parseInfixExpression)
 	p.registerInfix(token.LessThan, p.parseInfixExpression)

@@ -1,10 +1,10 @@
-package pkg
+package ast
 
 import (
 	"bytes"
 	"strings"
 
-	"github.com/Corralitz/cocolang-go/pkg/token"
+	"github.com/Corralitz/cocolang-go/token"
 )
 
 type Node interface {
