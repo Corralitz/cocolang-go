@@ -1,5 +1,9 @@
 package pkg
 
+import (
+	"github.com/Corralitz/cocolang-go/pkg/token"
+)
+
 type Lexer struct {
 	input        string
 	position     int
@@ -13,8 +17,8 @@ func New(input string) *Lexer {
 	return l
 }
 
-func (l *Lexer) NextToken() Token {
-	var tok Token
+func (l *Lexer) NextToken() token.Token {
+	var tok token.Token
 
 	l.skipWhitespace()
 
@@ -24,66 +28,66 @@ func (l *Lexer) NextToken() Token {
 			ch := l.ch
 			l.readChar()
 			literal := string(ch) + string(l.ch)
-			tok = Token{Type: Equal, Literal: literal}
+			tok = token.Token{Type: token.Equal, Literal: literal}
 		} else {
-			tok = newToken(Assign, l.ch)
+			tok = newToken(token.Assign, l.ch)
 		}
 	case '+':
-		tok = newToken(Plus, l.ch)
+		tok = newToken(token.Plus, l.ch)
 	case '-':
-		tok = newToken(Minus, l.ch)
+		tok = newToken(token.Minus, l.ch)
 	case '!':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
 			literal := string(ch) + string(l.ch)
-			tok = Token{Type: NotEqual, Literal: literal}
+			tok = token.Token{Type: token.NotEqual, Literal: literal}
 		} else {
-			tok = newToken(Negation, l.ch)
+			tok = newToken(token.Negation, l.ch)
 		}
 	case '*':
-		tok = newToken(Multiplication, l.ch)
+		tok = newToken(token.Multiplication, l.ch)
 	case '/':
-		tok = newToken(Division, l.ch)
+		tok = newToken(token.Division, l.ch)
 	case '<':
-		tok = newToken(LessThan, l.ch)
+		tok = newToken(token.LessThan, l.ch)
 	case '>':
-		tok = newToken(GreaterThan, l.ch)
+		tok = newToken(token.GreaterThan, l.ch)
 	case ',':
-		tok = newToken(Comma, l.ch)
+		tok = newToken(token.Comma, l.ch)
 	case ';':
-		tok = newToken(Semicolon, l.ch)
+		tok = newToken(token.Semicolon, l.ch)
 	case ':':
-		tok = newToken(Colon, l.ch)
+		tok = newToken(token.Colon, l.ch)
 	case '(':
-		tok = newToken(LeftParen, l.ch)
+		tok = newToken(token.LeftParen, l.ch)
 	case ')':
-		tok = newToken(RightParen, l.ch)
+		tok = newToken(token.RightParen, l.ch)
 	case '{':
-		tok = newToken(LeftBrace, l.ch)
+		tok = newToken(token.LeftBrace, l.ch)
 	case '}':
-		tok = newToken(RightBrace, l.ch)
+		tok = newToken(token.RightBrace, l.ch)
 	case '[':
-		tok = newToken(LeftBracket, l.ch)
+		tok = newToken(token.LeftBracket, l.ch)
 	case ']':
-		tok = newToken(RightBracket, l.ch)
+		tok = newToken(token.RightBracket, l.ch)
 	case '"':
-		tok.Type = String
+		tok.Type = token.String
 		tok.Literal = l.readString()
 	case 0:
 		tok.Literal = ""
-		tok.Type = EOF
+		tok.Type = token.EOF
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
-			tok.Type = LookupIdentifierType(tok.Literal)
+			tok.Type = token.LookupIdentifierType(tok.Literal)
 			return tok
 		} else if isDigit(l.ch) {
 			tok.Literal = l.readNumber()
-			tok.Type = Int
+			tok.Type = token.Int
 			return tok
 		} else {
-			tok = newToken(Illegal, l.ch)
+			tok = newToken(token.Illegal, l.ch)
 		}
 	}
 
@@ -91,8 +95,8 @@ func (l *Lexer) NextToken() Token {
 	return tok
 }
 
-func newToken(tokenType TokenType, ch byte) Token {
-	return Token{Type: tokenType, Literal: string(ch)}
+func newToken(tokenType token.TokenType, ch byte) token.Token {
+	return token.Token{Type: tokenType, Literal: string(ch)}
 }
 
 func (l *Lexer) readChar() {

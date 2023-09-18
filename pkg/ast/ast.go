@@ -3,6 +3,8 @@ package pkg
 import (
 	"bytes"
 	"strings"
+
+	"github.com/Corralitz/cocolang-go/pkg/token"
 )
 
 type Node interface {
@@ -43,7 +45,7 @@ func (p *Program) String() string {
 }
 
 type BlockStatement struct {
-	Token      Token // the { token
+	Token      token.Token // the { token
 	Statements []Statement
 }
 
@@ -60,7 +62,7 @@ func (bs *BlockStatement) String() string {
 }
 
 type LetStatement struct {
-	Token Token // the Let token
+	Token token.Token // the token.Let token
 	Name  *Identifier
 	Value Expression
 }
@@ -78,12 +80,12 @@ func (ls *LetStatement) String() string {
 		out.WriteString(ls.Value.String())
 	}
 
-	out.WriteString(Semicolon)
+	out.WriteString(token.Semicolon)
 	return out.String()
 }
 
 type ReturnStatement struct {
-	Token       Token // the 'return' token
+	Token       token.Token // the 'return' token
 	ReturnValue Expression
 }
 
@@ -98,12 +100,12 @@ func (rs *ReturnStatement) String() string {
 		out.WriteString(rs.ReturnValue.String())
 	}
 
-	out.WriteString(Semicolon)
+	out.WriteString(token.Semicolon)
 	return out.String()
 }
 
 type ExpressionStatement struct {
-	Token      Token // the first token of the expression
+	Token      token.Token // the first token of the expression
 	Expression Expression
 }
 
@@ -117,7 +119,7 @@ func (es *ExpressionStatement) String() string {
 }
 
 type PrefixExpression struct {
-	Token    Token // The prefix token, e.g. !
+	Token    token.Token // The prefix token, e.g. !
 	Operator string
 	Right    Expression
 }
@@ -127,16 +129,16 @@ func (pe *PrefixExpression) TokenLiteral() string { return pe.Token.Literal }
 func (pe *PrefixExpression) String() string {
 	var out bytes.Buffer
 
-	out.WriteString(LeftParen)
+	out.WriteString(token.LeftParen)
 	out.WriteString(pe.Operator)
 	out.WriteString(pe.Right.String())
-	out.WriteString(RightParen)
+	out.WriteString(token.RightParen)
 
 	return out.String()
 }
 
 type InfixExpression struct {
-	Token    Token // The operator token, e.g. +
+	Token    token.Token // The operator token, e.g. +
 	Left     Expression
 	Operator string
 	Right    Expression
@@ -147,17 +149,17 @@ func (oe *InfixExpression) TokenLiteral() string { return oe.Token.Literal }
 func (oe *InfixExpression) String() string {
 	var out bytes.Buffer
 
-	out.WriteString(LeftParen)
+	out.WriteString(token.LeftParen)
 	out.WriteString(oe.Left.String())
 	out.WriteString(" " + oe.Operator + " ")
 	out.WriteString(oe.Right.String())
-	out.WriteString(RightParen)
+	out.WriteString(token.RightParen)
 
 	return out.String()
 }
 
 type IfExpression struct {
-	Token       Token // The 'if' token
+	Token       token.Token // The 'if' token
 	Condition   Expression
 	Consequence *BlockStatement
 	Alternative *BlockStatement
@@ -182,8 +184,8 @@ func (ie *IfExpression) String() string {
 }
 
 type CallExpression struct {
-	Token     Token      // The '(' token
-	Function  Expression // Identifier or FunctionLiteral
+	Token     token.Token // The '(' token
+	Function  Expression  // Identifier or FunctionLiteral
 	Arguments []Expression
 }
 
@@ -198,15 +200,15 @@ func (ce *CallExpression) String() string {
 	}
 
 	out.WriteString(ce.Function.String())
-	out.WriteString(LeftParen)
-	out.WriteString(strings.Join(args, Comma+" "))
-	out.WriteString(RightParen)
+	out.WriteString(token.LeftParen)
+	out.WriteString(strings.Join(args, token.Comma+" "))
+	out.WriteString(token.RightParen)
 
 	return out.String()
 }
 
 type Identifier struct {
-	Token Token // the Identifier token
+	Token token.Token // the token.Identifier token
 	Value string
 }
 
@@ -215,7 +217,7 @@ func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
 func (i *Identifier) String() string       { return i.Value }
 
 type Boolean struct {
-	Token Token
+	Token token.Token
 	Value bool
 }
 
@@ -224,7 +226,7 @@ func (b *Boolean) TokenLiteral() string { return b.Token.Literal }
 func (b *Boolean) String() string       { return b.Token.Literal }
 
 type IntegerLiteral struct {
-	Token Token
+	Token token.Token
 	Value int64
 }
 
@@ -233,7 +235,7 @@ func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
 func (il *IntegerLiteral) String() string       { return il.Token.Literal }
 
 type StringLiteral struct {
-	Token Token
+	Token token.Token
 	Value string
 }
 
@@ -242,7 +244,7 @@ func (sl *StringLiteral) TokenLiteral() string { return sl.Token.Literal }
 func (sl *StringLiteral) String() string       { return sl.Token.Literal }
 
 type FunctionLiteral struct {
-	Token      Token // The 'fn' token
+	Token      token.Token // The 'fn' token
 	Parameters []*Identifier
 	Body       *BlockStatement
 }
@@ -258,16 +260,16 @@ func (fl *FunctionLiteral) String() string {
 	}
 
 	out.WriteString(fl.TokenLiteral())
-	out.WriteString(LeftParen)
-	out.WriteString(strings.Join(params, Comma+" "))
-	out.WriteString(RightParen)
+	out.WriteString(token.LeftParen)
+	out.WriteString(strings.Join(params, token.Comma+" "))
+	out.WriteString(token.RightParen)
 	out.WriteString(fl.Body.String())
 
 	return out.String()
 }
 
 type ArrayLiteral struct {
-	Token    Token // the '[' token
+	Token    token.Token // the '[' token
 	Elements []Expression
 }
 
@@ -281,52 +283,52 @@ func (al *ArrayLiteral) String() string {
 		elements = append(elements, el.String())
 	}
 
-	out.WriteString(LeftBracket)
-	out.WriteString(strings.Join(elements, Comma+" "))
-	out.WriteString(RightBracket)
+	out.WriteString(token.LeftBracket)
+	out.WriteString(strings.Join(elements, token.Comma+" "))
+	out.WriteString(token.RightBracket)
 
 	return out.String()
 }
 
 type IndexExpression struct {
-	Token Token // The [ token
+	Token token.Token // The [ token
 	Left  Expression
 	Index Expression
 }
 
 func (ie *IndexExpression) expressionNode()      {}
-func (ie *IndexExpression) TokenLiteral() string { return ie.Literal }
+func (ie *IndexExpression) TokenLiteral() string { return ie.Token.Literal }
 func (ie *IndexExpression) String() string {
 	var out bytes.Buffer
 
-	out.WriteString(LeftParen)
+	out.WriteString(token.LeftParen)
 	out.WriteString(ie.Left.String())
-	out.WriteString(LeftBracket)
+	out.WriteString(token.LeftBracket)
 	out.WriteString(ie.Index.String())
-	out.WriteString(RightBracket)
-	out.WriteString(RightParen)
+	out.WriteString(token.RightBracket)
+	out.WriteString(token.RightParen)
 
 	return out.String()
 }
 
 type HashLiteral struct {
-	Token Token // The '{' token
+	Token token.Token // The '{' token
 	Pairs map[Expression]Expression
 }
 
 func (hl *HashLiteral) expressionNode()      {}
-func (hl *HashLiteral) TokenLiteral() string { return hl.Literal }
+func (hl *HashLiteral) TokenLiteral() string { return hl.Token.Literal }
 func (hl *HashLiteral) String() string {
 	var out bytes.Buffer
 
 	var pairs []string
 	for key, value := range hl.Pairs {
-		pairs = append(pairs, key.String()+Colon+value.String())
+		pairs = append(pairs, key.String()+token.Colon+value.String())
 	}
 
-	out.WriteString(LeftBrace)
-	out.WriteString(strings.Join(pairs, Comma+" "))
-	out.WriteString(RightBrace)
+	out.WriteString(token.LeftBrace)
+	out.WriteString(strings.Join(pairs, token.Comma+" "))
+	out.WriteString(token.RightBrace)
 
 	return out.String()
 }
