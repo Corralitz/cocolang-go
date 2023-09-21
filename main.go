@@ -15,6 +15,27 @@ func main() {
 	}
 
 	fmt.Printf("Hola %s! Bienvenido a Coco, el lenguaje de programación!\n", user.Username)
+
+	fmt.Printf("      * ***                                          ***** *\n")
+	fmt.Printf("    *  ****  *                                    ******  *\n")
+	fmt.Printf("   *  *  ****                                    **   *  * \n")
+	fmt.Printf("  *  **   **                                    *    *  *  \n")
+	fmt.Printf(" *  ***           ****                  ****        *  *\n")
+	fmt.Printf("**   **          * ***  *    ****      * ***  *    ** **              ****    ***  ****        ****\n")
+	fmt.Printf("**   **         *   ****    * ***  *  *   ****     ** **             * ***  *  **** **** *    *  ***  * \n")
+	fmt.Printf("**   **        **    **    *   ****  **    **      ** **            *   ****    **   ****    *    ****\n")
+	fmt.Printf("**   **        **    **   **         **    **      ** **           **    **     **    **    **     **\n")
+	fmt.Printf("**   **        **    **   **         **    **      ** **           **    **     **    **    **     **\n")
+	fmt.Printf(" **  **        **    **   **         **    **      *  **           **    **     **    **    **     **\n")
+	fmt.Printf("  ** *      *  **    **   **         **    **         *            **    **     **    **    **     **\n")
+	fmt.Printf("   ***     *    ******    ***     *   ******      ****           * **    **     **    **    **     **\n")
+	fmt.Printf("    *******      ****      *******     ****      *  *************   ***** **    ***   ***    ********\n")
+	fmt.Printf("      ***                   *****               *     *********      ***   **    ***   ***     *** ***\n")
+	fmt.Printf("                                                *                                                   ***\n")
+	fmt.Printf("                                                 **                                           ****   ***\n")
+	fmt.Printf("                                                                                            *******  **\n")
+	fmt.Printf("                                                                                           *     ****\n")
+
 	fmt.Printf("Empiece ingresando una expresión\n")
 	repl.Start(os.Stdin, os.Stdout)
 }
