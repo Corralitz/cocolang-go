@@ -79,7 +79,6 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.LeftParen, p.parseCallExpression)
 	p.registerInfix(token.LeftBracket, p.parseIndexExpression)
 
-	// Read two tokens, so currentToken and peekToken are both set
 	p.nextToken()
 	p.nextToken()
 
@@ -131,7 +130,6 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 		return nil
 	}
 
-	// get value
 	p.nextToken()
 	stmt.Value = p.parseExpression(Lowest)
 
@@ -144,7 +142,6 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 	stmt := &ast.ReturnStatement{Token: p.currentToken}
 
-	// get value
 	p.nextToken()
 	stmt.ReturnValue = p.parseExpression(Lowest)
 

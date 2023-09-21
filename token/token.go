@@ -55,13 +55,13 @@ const (
 )
 
 var keywords = map[string]TokenType{
-	"fn":      Function,
-	"var":     Let,
-	"verdd":   True,
-	"falso":   False,
-	"si":      If,
-	"si-no":   Else,
-	"regresa": Return,
+	"fn":     Function,
+	"let":    Let,
+	"true":   True,
+	"false":  False,
+	"si":     If,
+	"else":   Else,
+	"return": Return,
 }
 
 func LookupIdentifierType(identifier string) TokenType {
