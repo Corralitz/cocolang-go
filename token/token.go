@@ -59,7 +59,7 @@ var keywords = map[string]TokenType{
 	"let":    Let,
 	"true":   True,
 	"false":  False,
-	"si":     If,
+	"if":     If,
 	"else":   Else,
 	"return": Return,
 }
